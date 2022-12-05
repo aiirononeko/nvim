@@ -61,3 +61,38 @@ require('lspconfig')['gopls'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
 }
+
+local cmp = require("cmp")
+cmp.setup({
+	sources = {
+		{ name = "nvim_lsp" },
+		{ name = "buffer" },
+		{ name = "path" },
+		{ name = "cmdline" },
+		{ name = "snippy" },
+	},
+	mapping = {
+		["<C-p>"] = cmp.mapping.select_prev_item(),
+		["<C-n>"] = cmp.mapping.select_next_item(),
+		["<C-l>"] = cmp.mapping.complete(),
+	},
+})
+cmp.setup.cmdline(":", {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = {
+		{ name = "path" },
+		{ name = "cmdline" },
+	},
+})
+
+require('snippy').setup({
+    mappings = {
+        is = {
+            ['<Tab>'] = 'expand_or_advance',
+            ['<S-Tab>'] = 'previous',
+        },
+        nx = {
+            ['<leader>x'] = 'cut_text',
+        },
+    },
+})
