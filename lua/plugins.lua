@@ -9,7 +9,11 @@ require"packer".startup(function()
     	'nvim-tree/nvim-web-devicons',
   	},
 	}
-	use 'neovim/nvim-lspconfig'
+	use {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
+	}
 	use 'hrsh7th/cmp-nvim-lsp'
 	use 'hrsh7th/cmp-buffer'
 	use 'hrsh7th/cmp-path'
@@ -17,4 +21,8 @@ require"packer".startup(function()
 	use 'hrsh7th/nvim-cmp'
 	use 'dcampos/nvim-snippy'
 	use 'dcampos/cmp-snippy'
+	use {
+  	'nvim-telescope/telescope.nvim', tag = '0.1.0',
+  	requires = { {'nvim-lua/plenary.nvim'} }
+	}
 end)

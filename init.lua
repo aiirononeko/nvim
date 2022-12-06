@@ -57,19 +57,22 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
-local lsp_flags = {
-  -- This is the default in Nvim 0.7+
-  debounce_text_changes = 150,
-}
-require('lspconfig')['gopls'].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-}
-require('lspconfig')['java_language_server'].setup{
-		on_attach = on_attach,
-		flags = lsp_flags,
-		cmd = { 'java_language_server' },
-}
+require('mason').setup()
+
+local nvim_lsp = require('lspconfig')
+local mason_lspconfig = require('mason-lspconfig')
+mason_lspconfig.setup_handlers({ function(server_name)
+	local opts = {}
+   opts.on_attach = function(_, bufnr)
+     local bufopts = { silent = true, buffer = bufnr }
+     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  	 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+     vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, bufopts)
+     vim.keymap.set('n', 'grf', vim.lsp.buf.references, bufopts)
+     vim.keymap.set('n', '<space>p', vim.lsp.buf.format, bufopts)
+  end
+   nvim_lsp[server_name].setup(opts)
+end })
 
 local cmp = require("cmp")
 cmp.setup({
@@ -105,3 +108,9 @@ require('snippy').setup({
         },
     },
 })
+
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
