@@ -11,9 +11,13 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.api.nvim_exec('highlight SignColumn ctermbg=black', false)
 vim.wo.number = true
-vim.cmd 'set clipboard+=unnamedplus'
+vim.g.clipboard = 'clipboard'
+vim.api.nvim_set_option('clipboard', 'unnamedplus')
 vim.cmd('colorscheme gotham')
 vim.opt.termguicolors = true
+vim.opt.ambiwidth = 'single'
+
+vim.api.nvim_set_keymap('n', '<ESC><ESC>', ':nohlsearch<CR>', {silent=true})
 
 vim.api.nvim_create_autocmd({ 'BufReadPost' }, {
 	pattern = { '*' },
@@ -60,6 +64,11 @@ local lsp_flags = {
 require('lspconfig')['gopls'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
+}
+require('lspconfig')['java_language_server'].setup{
+		on_attach = on_attach,
+		flags = lsp_flags,
+		cmd = { 'java_language_server' },
 }
 
 local cmp = require("cmp")
