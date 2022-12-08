@@ -74,26 +74,26 @@ mason_lspconfig.setup_handlers({ function(server_name)
    nvim_lsp[server_name].setup(opts)
 end })
 
-local cmp = require("cmp")
+local cmp = require('cmp')
 cmp.setup({
 	sources = {
-		{ name = "nvim_lsp" },
-		{ name = "buffer" },
-		{ name = "path" },
-		{ name = "cmdline" },
-		{ name = "snippy" },
+		{ name = 'nvim_lsp' },
+		{ name = 'buffer' },
+		{ name = 'path' },
+		{ name = 'cmdline' },
+		{ name = 'snippy' },
 	},
 	mapping = {
-		["<C-p>"] = cmp.mapping.select_prev_item(),
-		["<C-n>"] = cmp.mapping.select_next_item(),
-		["<C-l>"] = cmp.mapping.complete(),
+		['<C-p>'] = cmp.mapping.select_prev_item(),
+		['<C-n>'] = cmp.mapping.select_next_item(),
+		['<C-l>'] = cmp.mapping.complete(),
 	},
 })
-cmp.setup.cmdline(":", {
+cmp.setup.cmdline(':', {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = {
-		{ name = "path" },
-		{ name = "cmdline" },
+		{ name = 'path' },
+		{ name = 'cmdline' },
 	},
 })
 
@@ -114,3 +114,16 @@ vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+
+local Terminal = require("toggleterm.terminal").Terminal
+local lazygit = Terminal:new({
+	cmd = "lazygit",
+	direction = "float",
+	hidden = true
+})
+
+function _lazygit_toggle()
+	lazygit:toggle()
+end
+
+vim.api.nvim_set_keymap("n", "lg", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
